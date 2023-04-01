@@ -12,10 +12,10 @@ public class Empleado {
     public int total;
 
     public Empleado(int cedula, String nombre, String apellido, String cargo, int salario, int[] horasExtras, int[] horasfestivas, int[] ventas, int total) {
-        Cedula = cedula;
+        this.Cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
-        Cargo = cargo;
+        this.Cargo = cargo;
         this.salario = salario;
         this.horasExtras = horasExtras;
         this.horasfestivas = horasfestivas;

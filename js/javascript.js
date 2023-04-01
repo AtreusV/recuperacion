@@ -3,43 +3,49 @@
 $(document).ready(function(){
 
     $('#listar').on('click', function(){
-        let tabla = document.querySelector('#tabla')
-        tabla.innerHTML = '<thead><th>Codigo</th><th>Nombre</th><th>Apellido</th><th>Materias</th><th>Notas</th><th>Juicio</th></thead>';
 
+        let tabla = document.querySelector('#tabla')
+        tabla.innerHTML = '<table id="tabla"><tr><th>Cedula</th><th>Nombre</th><th>Apellido</th><th>Cargo</th><th>Salario</th><th>Total</th></tr></table>';
+        
         $.ajax({
-            url:"http://localhost:8080/listarEstudiante",
+            url:"http://localhost:8080/listarEmpleado",
             type: "GET",
             dataType: "JSON",
             success: function(respuesta){
-                console.log(respuesta);
-
+                console.log(respuesta)
                 for(i=0; i <= respuesta.length; i++){
 
-                    tabla.innerHTML += '<tr><td>' + respuesta[i].iDcodigo + '</td><td>' 
-                        + respuesta[i].nombreEstu + '</td><td>'
-                        + respuesta[i].apellidoEstu + '</td><td>' 
-                        + respuesta[i].materiasEstu + '</td><td>' 
-                        + respuesta[i].notasEstu + '</td><td>'
-                        + respuesta[i].juicio + '</td></tr>' 
+                    tabla.innerHTML += '<tr><td>' 
+                    + respuesta[i].cedula + '</td><td>' 
+                    + respuesta[i].nombre + '</td><td>'
+                    + respuesta[i].apellido + '</td><td>' 
+                    + respuesta[i].Cargo + '</td><td>' 
+                    + respuesta[i].salario + '</td><td>'
+                    + respuesta[i].total + '</td></tr>' 
                 }      
             }
         })
     });
 
     $('#agregar').on('click', function() {
+        let tabla = document.querySelector('#tabla')
+        tabla.innerHTML = '<table id="tabla"></table>';
+        
         let datos = {
-            iDcodigo: parseInt($('#idUsuario').val()),
-            nombreEstu: $('#nombre').val(),
-            apellidoEstu: $('#Apellido').val(),
-            materiasEstu: materias = [$('#materia1').val(), $('#materia2').val(), $('#materia3').val()],
-            notasEstu: notas = [parseFloat($('#nota1').val()), parseFloat($('#nota2').val()), parseFloat($('#nota3').val())],
+            Cedula: parseInt($('#cedula').val()),
+            nombre: $('#nombre').val(),
+            apellido: $('#apellido').val(),
+            cargo: $('#cargo').val(),
+            salario: $('#salario').val(),
+            horasExtras: Extras = [0,0,0,0], //parseInt($('#extra1')).val(), parseInt($('#extra2').val()), parseInt($('#extra3').val()), parseInt($('#extra4').val()),parseInt($('#extra5').val())],
+            horasfestivas: festivas = [2,2,2,2,2], //parseInt($('#festivas1').val()), parseInt($('#festivas2').val()), parseInt($('#festivas3').val()), parseInt($('#festivas4').val()), parseInt($('#festivas5').val())],
+            ventas: venta = [0,0,0,0]
         }
-        console.log(datos)
-
+        
         let datosEnvio = JSON.stringify(datos);
-    
+        
         $.ajax({
-            url: "http://localhost:8080/agregarEstudiante",
+            url: "http://localhost:8080/agregarEmpleado",
             type: "POST",
             data: datosEnvio,
             contentType: "application/JSON",
@@ -47,6 +53,21 @@ $(document).ready(function(){
             success: function(respuesta) {
                 alert(respuesta);
             }
+        });
+        console.log(data)
+    });
+
+    $('#consultar').on('click', function() {
+        let tabla = document.querySelector('#tabla')
+        tabla.innerHTML = '<table id="tabla"></table>';
+
+        let cargo = $('#cargo').val()
+
+        $.ajax({
+            url: "http://localhost:8080/comisionEmpleado/"+cargo,
+            type: "GET",
+            dataType: "JSON",
+            //success: function(res) {}
         });
     });
 });
